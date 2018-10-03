@@ -135,7 +135,7 @@ namespace NotepadCSharp
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 1;
-			this.btnOK.Text = "&OK";
+			this.btnOK.Text = "&Найти";
 			// 
 			// FindForm
 			// 
@@ -149,19 +149,10 @@ namespace NotepadCSharp
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FindForm";
 			this.Text = "Find";
-			this.Load += new System.EventHandler(this.FindForm_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
-
-
-
 		#endregion
-
-		private void FindForm_Load(object sender, EventArgs e)
-		{
-
-		}
 	}
 }

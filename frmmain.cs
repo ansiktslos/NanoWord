@@ -1,13 +1,10 @@
 using System;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
+using System.Drawing.Printing;
 
 namespace NotepadCSharp
 {
-	
 	public class frmmain : System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.MainMenu mainMenu1;
@@ -19,7 +16,7 @@ namespace NotepadCSharp
 		private System.Windows.Forms.MenuItem mnuSave;
 		private System.Windows.Forms.MenuItem mnuExit;
 		private System.Windows.Forms.MenuItem mnuEdit;
-		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		public System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.MenuItem mnuCut;
 		private System.Windows.Forms.MenuItem mnuCopy;
 		private System.Windows.Forms.MenuItem mnuPaste;
@@ -27,7 +24,7 @@ namespace NotepadCSharp
 		private System.Windows.Forms.MenuItem mnuSelectAll;
 		private System.Windows.Forms.MenuItem mnuHelp;
 		private System.Windows.Forms.MenuItem mnuAbout;
-	
+
 
 		private System.Windows.Forms.MenuItem mnuArrangeIcons;
 		private System.Windows.Forms.MenuItem mnuCascade;
@@ -36,7 +33,7 @@ namespace NotepadCSharp
 		private System.Windows.Forms.MenuItem mnuWindow;
 		private int openDocuments = 0;
 		private System.Windows.Forms.MenuItem mnuFormat;
-		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		public System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.MenuItem mnuSaveAs;
 		private System.Windows.Forms.FontDialog fontDialog1;
 		private System.Windows.Forms.MenuItem mnuFont;
@@ -57,6 +54,13 @@ namespace NotepadCSharp
 		private ToolBarButton tbRight;
 		private ToolBarButton tbMoon;
 		private ToolBarButton tbSun;
+		private MenuItem mnuPrint;
+		private PrintDialog printDialog1;
+		private PrintDocument printDocument1;
+		private MenuItem mnuPicture;
+		private PictureBox pictureBox1;
+		private OpenFileDialog openFileDialog2;
+		private ContextMenuStrip contextMenuStrip1;
 		private System.ComponentModel.IContainer components;
 
 		[System.ComponentModel.Browsable(false)]
@@ -78,16 +82,16 @@ namespace NotepadCSharp
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
+		protected override void Dispose(bool disposing)
 		{
-			if( disposing )
+			if (disposing)
 			{
-				if (components != null) 
+				if (components != null)
 				{
 					components.Dispose();
 				}
 			}
-			base.Dispose( disposing );
+			base.Dispose(disposing);
 		}
 
 		#region Windows Form Designer generated code
@@ -116,6 +120,8 @@ namespace NotepadCSharp
 			this.mnuSelectAll = new System.Windows.Forms.MenuItem();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.mnuFind = new System.Windows.Forms.MenuItem();
+			this.mnuPrint = new System.Windows.Forms.MenuItem();
+			this.mnuPicture = new System.Windows.Forms.MenuItem();
 			this.mnuFormat = new System.Windows.Forms.MenuItem();
 			this.mnuFont = new System.Windows.Forms.MenuItem();
 			this.mnuColor = new System.Windows.Forms.MenuItem();
@@ -143,6 +149,12 @@ namespace NotepadCSharp
 			this.tbMoon = new System.Windows.Forms.ToolBarButton();
 			this.tbSun = new System.Windows.Forms.ToolBarButton();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+			this.printDialog1 = new System.Windows.Forms.PrintDialog();
+			this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mainMenu1
@@ -217,7 +229,9 @@ namespace NotepadCSharp
             this.menuItem12,
             this.mnuSelectAll,
             this.menuItem1,
-            this.mnuFind});
+            this.mnuFind,
+            this.mnuPrint,
+            this.mnuPicture});
 			this.mnuEdit.Text = "&Изменить";
 			// 
 			// mnuCut
@@ -271,6 +285,18 @@ namespace NotepadCSharp
 			this.mnuFind.Shortcut = System.Windows.Forms.Shortcut.CtrlF;
 			this.mnuFind.Text = "&Поиск";
 			this.mnuFind.Click += new System.EventHandler(this.mnuFind_Click);
+			// 
+			// mnuPrint
+			// 
+			this.mnuPrint.Index = 8;
+			this.mnuPrint.Text = "Печать";
+			this.mnuPrint.Click += new System.EventHandler(this.mnuPrint_Click_1);
+			// 
+			// mnuPicture
+			// 
+			this.mnuPicture.Index = 9;
+			this.mnuPicture.Text = "Вставить изображение";
+			this.mnuPicture.Click += new System.EventHandler(this.mnuPicture_Click);
 			// 
 			// mnuFormat
 			// 
@@ -430,11 +456,13 @@ namespace NotepadCSharp
 			// 
 			this.tbMoon.ImageIndex = 9;
 			this.tbMoon.Name = "tbMoon";
+			this.tbMoon.ToolTipText = "Темный фон";
 			// 
 			// tbSun
 			// 
 			this.tbSun.ImageIndex = 10;
 			this.tbSun.Name = "tbSun";
+			this.tbSun.ToolTipText = "Светлый фон";
 			// 
 			// imageList1
 			// 
@@ -452,10 +480,34 @@ namespace NotepadCSharp
 			this.imageList1.Images.SetKeyName(9, "Moon.jpg");
 			this.imageList1.Images.SetKeyName(10, "Sun.jpg");
 			// 
+			// printDialog1
+			// 
+			this.printDialog1.Document = this.printDocument1;
+			this.printDialog1.UseEXDialog = true;
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Location = new System.Drawing.Point(0, 34);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(477, 295);
+			this.pictureBox1.TabIndex = 3;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Visible = false;
+			// 
+			// openFileDialog2
+			// 
+			this.openFileDialog2.FileName = "openFileDialog2";
+			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+			// 
 			// frmmain
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(477, 331);
+			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.toolBarMain);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.IsMdiContainer = true;
@@ -464,6 +516,7 @@ namespace NotepadCSharp
 			this.Text = "Мокрый Soft";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Load += new System.EventHandler(this.frmmain_Load);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -471,16 +524,16 @@ namespace NotepadCSharp
 		#endregion
 
 		[STAThread]
-		static void Main() 
+		static void Main()
 		{
 			Application.Run(new frmmain());
 		}
 
-		
+
 		private void mnuNew_Click(object sender, System.EventArgs e)
 		{
 			//Создаем новый экземпляр формы  frm
-			blank  frm = new blank();
+			blank frm = new blank();
 
 			frm.DocName = "Без название " + ++openDocuments;
 			//Указываем, что родительским контейнером 
@@ -496,7 +549,7 @@ namespace NotepadCSharp
 			this.LayoutMdi(MdiLayout.ArrangeIcons);
 		}
 
-	
+
 
 		private void mnuCascade_Click(object sender, System.EventArgs e)
 		{
@@ -547,10 +600,9 @@ namespace NotepadCSharp
 		{
 			//Можно программно задавать доступные для обзора расширения файлов. 
 			//openFileDialog1.Filter = "Text Files (*.txt)|*.txt|All Files(*.*)|*.*";
-			
-			
+
 			//Если выбран диалог открытия файла, выполняем условие
-			if (openFileDialog1.ShowDialog() == DialogResult.OK) 
+			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				//Создаем новый документ
 				blank frm = new blank();
@@ -563,14 +615,8 @@ namespace NotepadCSharp
 				//Свойству Text формы присваиваем переменную DocName
 				frm.Text = frm.DocName;
 				//Вызываем форму frm
-				frm.Show();	
-				mnuSave.Enabled = true;
+				frm.Show();
 			}
-		
-
-	
-
-		
 		}
 
 		private void mnuSave_Click(object sender, System.EventArgs e)
@@ -580,8 +626,6 @@ namespace NotepadCSharp
 			//Вызываем метод Save формы blank
 			frm.Save(frm.DocName);
 			frm.IsSaved = true;
-			
-			
 		}
 
 		private void mnuSaveAs_Click(object sender, System.EventArgs e)
@@ -591,7 +635,7 @@ namespace NotepadCSharp
 			//openFileDialog1.Filter = "Text Files (*.txt)|*.txt|All Files(*.*)|*.*";
 
 			//Если выбран диалог открытия файла, выполняем условие
-			if (saveFileDialog1.ShowDialog() == DialogResult.OK) 
+			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				//Переключаем фокус на данную форму.
 				blank frm = (blank)this.ActiveMdiChild;
@@ -602,13 +646,9 @@ namespace NotepadCSharp
 				//Присваиваем переменной FileName имя сохраняемого файла
 				frm.DocName = saveFileDialog1.FileName;
 				//Свойству Text формы присваиваем переменную DocName
-				frm.Text = frm.DocName;		
+				frm.Text = frm.DocName;
 				frm.IsSaved = true;
-				
-		
 			}
-
-	
 		}
 
 		private void mnuExit_Click(object sender, System.EventArgs e)
@@ -619,7 +659,7 @@ namespace NotepadCSharp
 		private void mnuFont_Click(object sender, System.EventArgs e)
 		{
 			//Переключаем фокус на данную форму.
-			blank  frm = (blank)this.ActiveMdiChild;
+			blank frm = (blank)this.ActiveMdiChild;
 			//Указываем, что родительской формой является форма frmmain	
 			frm.MdiParent = this;
 			//Вызываем диалог
@@ -627,12 +667,12 @@ namespace NotepadCSharp
 			//Связываем свойства SelectionFont и SelectionColor элемента RichTextBox 
 			//с соответствующими свойствами диалога
 			fontDialog1.Font = frm.richTextBox1.SelectionFont;
-			fontDialog1.Color = frm.richTextBox1.SelectionColor; 
+			fontDialog1.Color = frm.richTextBox1.SelectionColor;
 			//Если выбран диалог открытия файла, выполняем условие
 			if (fontDialog1.ShowDialog() == DialogResult.OK)
 			{
 				frm.richTextBox1.SelectionFont = fontDialog1.Font;
-				frm.richTextBox1.SelectionColor = fontDialog1.Color; 
+				frm.richTextBox1.SelectionColor = fontDialog1.Color;
 			}
 			//Показываем форму
 			frm.Show();
@@ -642,24 +682,24 @@ namespace NotepadCSharp
 		{
 			blank frm = (blank)this.ActiveMdiChild;
 			frm.MdiParent = this;
-			colorDialog1.Color = frm.richTextBox1.SelectionColor; 
-			
+			colorDialog1.Color = frm.richTextBox1.SelectionColor;
+
 			if (colorDialog1.ShowDialog() == DialogResult.OK)
 			{
-				frm.richTextBox1.SelectionColor = colorDialog1.Color; 
+				frm.richTextBox1.SelectionColor = colorDialog1.Color;
 			}
 
 			frm.Show();
 		}
 
-		
+
 		private void mnuFind_Click(object sender, System.EventArgs e)
 		{
 			//Создаем новый экземпляр формы FindForm
 			FindForm frm = new FindForm();
 			//Если выбран результат DialogResult.Cancel, закрываем форму (до этого 
 			//мы использовали DialogResult.OK
-			if(frm.ShowDialog(this) == DialogResult.Cancel) return;
+			if (frm.ShowDialog(this) == DialogResult.Cancel) return;
 			////Переключаем фокус на данную форму.
 			blank form = (blank)this.ActiveMdiChild;
 			////Указываем, что родительской формой является форма frmmain	
@@ -674,7 +714,7 @@ namespace NotepadCSharp
 		private void mnuAbout_Click(object sender, System.EventArgs e)
 		{
 			//Создаем новый экземпляр формы  About
-			About  frm = new About();
+			About frm = new About();
 			frm.Show();
 		}
 
@@ -682,7 +722,7 @@ namespace NotepadCSharp
 		{
 			blank frm = (blank)this.ActiveMdiChild;
 			//New
-			if (e.Button.Equals(tbNew)) 
+			if (e.Button.Equals(tbNew))
 			{
 				mnuNew_Click(this, new EventArgs());
 			}
@@ -732,32 +772,47 @@ namespace NotepadCSharp
 			//Moon
 			if (e.Button.Equals(tbMoon))
 			{
-				string rtbText = frm.richTextBox1.Text;
-				frm.richTextBox1.ForeColor = Color.White;
-				for (int i = 0; i < rtbText.Length; i++)
+				if (frm.richTextBox1.SelectionColor == Color.Black)
 				{
-					if (rtbText[i] >= 'A' && rtbText[i] <= 'Z')
+					string rtbText = frm.richTextBox1.Text;
+					frm.richTextBox1.ForeColor = Color.White;
+					for (int i = 0; i < rtbText.Length; i++)
 					{
-						frm.richTextBox1.Select(i, 1);
-						frm.richTextBox1.SelectionColor = Color.White;
+						if (rtbText[i] >= 'A' && rtbText[i] <= 'Z')
+						{
+							frm.richTextBox1.Select(i, 1);
+							frm.richTextBox1.SelectionColor = Color.White;
+						}
+						frm.richTextBox1.BackColor = Color.Black;
 					}
 				}
-				frm.richTextBox1.BackColor = Color.Black;
+				else
+				{
+					frm.richTextBox1.BackColor = Color.Black;
+
+				}
 			}
 			//Sun
 			if (e.Button.Equals(tbSun))
 			{
-				string rtbText = frm.richTextBox1.Text;
-				frm.richTextBox1.ForeColor = Color.Black;
-				for (int i = 0; i < rtbText.Length; i++)
+				if (frm.richTextBox1.SelectionColor == Color.White)
 				{
-					if (rtbText[i] >= 'A' && rtbText[i] <= 'Z')
+					string rtbText = frm.richTextBox1.Text;
+					frm.richTextBox1.ForeColor = Color.Black;
+					for (int i = 0; i < rtbText.Length; i++)
 					{
-						frm.richTextBox1.Select(i, 1);
-						frm.richTextBox1.SelectionColor = Color.Black;
+						if (rtbText[i] >= 'A' && rtbText[i] <= 'Z')
+						{
+							frm.richTextBox1.Select(i, 1);
+							frm.richTextBox1.SelectionColor = Color.Black;
+						}
+						frm.richTextBox1.BackColor = Color.White;
 					}
 				}
-				frm.richTextBox1.BackColor = Color.White;
+				else
+				{
+					frm.richTextBox1.BackColor = Color.White;
+				}
 			}
 
 		}
@@ -767,9 +822,88 @@ namespace NotepadCSharp
 
 		}
 
-		private void menuItem2_Click(object sender, EventArgs e)
+		private void mnuPrint_Click_1(object sender, EventArgs e)
 		{
+			blank frm = (blank)this.ActiveMdiChild;
+			if (printDialog1.ShowDialog() == DialogResult.OK)
+			{
+				printDocument1.Print();
+			}
+		}
 
+		private void printDocument1_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+		{
+			blank frm = (blank)this.ActiveMdiChild;
+			char[] param = { '\n' };
+
+			if (printDialog1.PrinterSettings.PrintRange == PrintRange.Selection)
+			{
+				lines = frm.richTextBox1.SelectedText.Split(param);
+			}
+			else
+			{
+				lines = frm.richTextBox1.Text.Split(param);
+			}
+
+			int i = 0;
+			char[] trimParam = { '\r' };
+			foreach (string s in lines)
+			{
+				lines[i++] = s.TrimEnd(trimParam);
+			}
+		}
+
+		private int linesPrinted;
+		private string[] lines;
+
+		private void OnPrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+		{
+			blank frm = (blank)this.ActiveMdiChild;
+			int x = e.MarginBounds.Left;
+			int y = e.MarginBounds.Top;
+			Brush brush = new SolidBrush(frm.richTextBox1.ForeColor);
+
+			while (linesPrinted < lines.Length)
+			{
+				e.Graphics.DrawString(lines[linesPrinted++],
+					frm.richTextBox1.Font, brush, x, y);
+				y += 15;
+				if (y >= e.MarginBounds.Bottom)
+				{
+					e.HasMorePages = true;
+					return;
+				}
+			}
+
+			linesPrinted = 0;
+			e.HasMorePages = false;
+		}
+
+		private void PrintDoc()
+		{
+			printDialog1.ShowDialog();
+			if (printDialog1.ShowDialog() == DialogResult.OK)
+				printDocument1.Print();
+		}
+
+		private void mnuPicture_Click(object sender, EventArgs e)
+		{
+			blank frm = (blank)this.ActiveMdiChild;
+			openFileDialog2.Filter = "Images |*.bmp;*.jpg;*.png;*.gif;*.ico";
+			openFileDialog2.Multiselect = false;
+			openFileDialog2.FileName = "";
+			DialogResult result = openFileDialog2.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				Image img = Image.FromFile(openFileDialog2.FileName);
+				Clipboard.SetImage(img);
+				frm.richTextBox1.Paste();
+				frm.richTextBox1.Focus();
+			}
+			else
+			{
+				frm.richTextBox1.Focus();
+			}
 		}
 	}
 }

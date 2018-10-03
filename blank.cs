@@ -152,13 +152,14 @@ namespace NotepadCSharp
 			// 
 			// sbAmount
 			// 
+			this.sbAmount.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
 			this.sbAmount.Name = "sbAmount";
 			this.sbAmount.Text = "Количество символов";
-			this.sbAmount.Width = 140;
+			this.sbAmount.Width = 195;
 			// 
 			// sbTime
 			// 
-			this.sbTime.Alignment = System.Windows.Forms.HorizontalAlignment.Center;
+			this.sbTime.Alignment = System.Windows.Forms.HorizontalAlignment.Left;
 			this.sbTime.Name = "sbTime";
 			this.sbTime.Text = "Время";
 			this.sbTime.Width = 80;
@@ -235,17 +236,21 @@ namespace NotepadCSharp
 
 		private void cmnuCut_Click(object sender, System.EventArgs e)
 		{
-			Cut();
+				if (richTextBox1.SelectedText != "")
+				richTextBox1.Cut();
 		}
 
 		private void cmnuCopy_Click(object sender, System.EventArgs e)
 		{
-			Copy();
+			Clipboard.SetDataObject(richTextBox1.SelectedText);
 		}
 
 		private void cmnuPaste_Click(object sender, System.EventArgs e)
 		{
-			Paste();
+				//Извлекаем (точнее копируем) его и сохраняем в переменную
+				string someText = Clipboard.GetText();
+				//Выводим показываем сообщение с текстом, скопированным из буфера обмена
+				richTextBox1.SelectedText = someText;
 		}
 
 		private void cmnuDelete_Click(object sender, System.EventArgs e)
@@ -256,6 +261,11 @@ namespace NotepadCSharp
 		private void cmnuSelectAll_Click(object sender, System.EventArgs e)
 		{
 			SelectAll();
+		}
+
+		private void cmnuPrint_Click(object sender, System.EventArgs e)
+		{
+			//Print();
 		}
 		//Создаем метод Save, в качестве параметра объявляем строку адреса  файла.
 		public void Save(string SaveFileName)
@@ -299,5 +309,5 @@ namespace NotepadCSharp
 			//и длину  текста в RichTextBox.
 			sbAmount.Text = "Количество символов " + richTextBox1.Text.Length.ToString();
 		}
-		}
+	}
 }
