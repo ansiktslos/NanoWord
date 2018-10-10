@@ -108,7 +108,7 @@ namespace NotepadCSharp
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(251, 39);
 			this.label2.TabIndex = 4;
-			this.label2.Text = "Teamlead and programmer: Сидько Юрий\r\nTester: Войтешенко Сергій\r\nAccountant: Поле" +
+			this.label2.Text = "Teamlead and programmer: Сидько Юрий\r\nTester: Войтешенко Сергей\r\nAccountant: Поле" +
     "вик Антон и Чобиток Валентин";
 			// 
 			// About
